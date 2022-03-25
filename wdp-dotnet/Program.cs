@@ -20,6 +20,7 @@ public class Program {
             var bytes = File.ReadAllBytes(file.FullName);
             var data = ProtectedData.Protect(bytes, optionalEntropy: null, scope: DataProtectionScope.CurrentUser);
             File.WriteAllBytes(output_file, data);
+            Console.WriteLine($"Locked as {output_file}");
         }
         else if (action == Action.Unlock)
         {
@@ -27,6 +28,7 @@ public class Program {
             var bytes = File.ReadAllBytes(file.FullName);
             bytes = ProtectedData.Unprotect(bytes, null, DataProtectionScope.CurrentUser);
             File.WriteAllBytes(output_file, bytes);
+            Console.WriteLine($"Unlocked as {output_file}");
         }
     }
 }
