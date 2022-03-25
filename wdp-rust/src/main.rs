@@ -35,11 +35,18 @@ fn main() -> anyhow::Result<()> {
         Cli::Lock { file } => {
             let path: PathBuf = file.try_into()?;
             let unprotected = std::fs::read(&path)?;
+
+            println!("Unprotected bytes:");
+            println!("{unprotected:02X?}");
+
             let unprotected = CryptographicBuffer::CreateFromByteArray(&unprotected)?;
             let protected = provider.ProtectAsync(unprotected)?.get()?;
             let protected_bytes = unsafe { as_mut_bytes(&protected)? };
+            
+            println!("Protected bytes:");
+            println!("{protected_bytes:02X?}");
 
-            let output_file = format!("{file}.locked");
+            let output_file = format!("{file}.rust.locked");
             std::fs::write(&output_file, protected_bytes)?;
             println!("Locked as: {output_file}");
         }
@@ -60,7 +67,7 @@ fn main() -> anyhow::Result<()> {
             let unprotected_bytes = unsafe { as_mut_bytes(&unprotected)? };
             eprintln!("Got raw bytes");
 
-            let output_file = format!("{file}.unlocked");
+            let output_file = format!("{file}.rust.unlocked");
             std::fs::write(&output_file, unprotected_bytes)?;
             println!("Unlocked as: {output_file}");
         }

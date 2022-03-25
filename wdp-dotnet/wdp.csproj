@@ -9,7 +9,7 @@
 
   <ItemGroup>
     <PackageReference Include="System.CommandLine" Version="2.0.0-beta3.22114.1" />
-    <PackageReference Include="System.COmmandLine.DragonFruit" Version="0.4.0-alpha.22114.1" />
+    <PackageReference Include="System.CommandLine.DragonFruit" Version="0.4.0-alpha.22114.1" />
     <PackageReference Include="System.Security.Cryptography.ProtectedData" Version="6.0.0" />
   </ItemGroup>
 

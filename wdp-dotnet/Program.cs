@@ -16,18 +16,26 @@ public class Program {
 
         if (action == Action.Lock)
         {
-            var output_file = $"{file.FullName}.locked";
+            var output_file = $"{file.FullName}.dotnet.locked";
             var bytes = File.ReadAllBytes(file.FullName);
-            var data = ProtectedData.Protect(bytes, optionalEntropy: null, scope: DataProtectionScope.CurrentUser);
-            File.WriteAllBytes(output_file, data);
+            
+            Console.WriteLine("Unprotected bytes:");
+            Console.WriteLine($"[{BitConverter.ToString(bytes).Replace("-", ", ")}]");
+
+            var protected_data = ProtectedData.Protect(bytes, optionalEntropy: null, scope: DataProtectionScope.CurrentUser);
+
+            Console.WriteLine("Protected bytes:");
+            Console.WriteLine($"[{BitConverter.ToString(protected_data).Replace("-", ", ")}]");
+
+            File.WriteAllBytes(output_file, protected_data);
             Console.WriteLine($"Locked as {output_file}");
         }
         else if (action == Action.Unlock)
         {
-            var output_file = $"{file.FullName}.unlocked";
+            var output_file = $"{file.FullName}.dotnet.unlocked";
             var bytes = File.ReadAllBytes(file.FullName);
-            bytes = ProtectedData.Unprotect(bytes, null, DataProtectionScope.CurrentUser);
-            File.WriteAllBytes(output_file, bytes);
+            var unprotected_bytes = ProtectedData.Unprotect(bytes, null, DataProtectionScope.CurrentUser);
+            File.WriteAllBytes(output_file, unprotected_bytes);
             Console.WriteLine($"Unlocked as {output_file}");
         }
     }
